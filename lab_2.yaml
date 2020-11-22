@@ -1,0 +1,392 @@
+---
+openapi: 3.0.3
+info:
+  title: User notes
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/Yarik-osg/lab_5/1.0.0
+  description: SwaggerHub API Auto Mocking
+paths:
+  /user:
+    post:
+      tags:
+      - User
+      summary: Create new user to list
+      description: Create new user to list
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        "400":
+          description: Invalid body supplied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  property_name:
+                    type: string
+                nullable: false
+        "409":
+          description: User with such email already exists
+  /user/{userId}:
+    get:
+      tags:
+      - User
+      summary: Get user data
+      description: Get user data
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        "400":
+          description: Invalid Id supplied
+        "404":
+          description: User not found
+  /user/{userId}/note:
+    post:
+      tags:
+      - Note
+      summary: Create new note
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Create new note
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/note'
+        "400":
+          description: Invalid body supplied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  property_name:
+                    type: string
+                nullable: false
+  /user/{userId}/{noteId}:
+    get:
+      tags:
+      - Note
+      summary: Get notes data
+      description: Get notes data
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      - name: noteId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/note'
+        "400":
+          description: Invalid Id supplied
+        "404":
+          description: User not found
+    put:
+      tags:
+      - Note
+      summary: Edit notes
+      description: Edit notes
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      - name: noteId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/note'
+        "400":
+          description: Invalid Id supplied
+        "404":
+          description: Note not found
+    delete:
+      tags:
+      - Note
+      summary: Delete notes
+      description: Delete notes
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      - name: noteId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Note has been deleted
+        "400":
+          description: Invalid Note
+        "404":
+          description: Note not found
+  /user/{userId}/{noteId}/tag:
+    post:
+      tags:
+      - Tag
+      summary: Create new tag
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      - name: noteId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Create new tag
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tag'
+        "400":
+          description: Invalid body supplied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  property_name:
+                    type: string
+                nullable: false
+  /user/{userId}/{noteId}/{tagId}:
+    get:
+      tags:
+      - Tag
+      summary: Get tags
+      description: Get tags data
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      - name: noteId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      - name: tagId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tag'
+        "400":
+          description: Invalid Id supplied
+        "404":
+          description: Tag not found
+    put:
+      tags:
+      - Tag
+      summary: Edit tags
+      description: Edit tags
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      - name: noteId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      - name: tagId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tag'
+        "400":
+          description: Invalid Id supplied
+        "404":
+          description: Tag not found
+    delete:
+      tags:
+      - Tag
+      summary: Delete tags
+      description: Delete tags
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      - name: noteId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      - name: tagId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Tag has been deleted
+        "400":
+          description: Invalid Tag
+        "404":
+          description: Tag not found
+components:
+  schemas:
+    user:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 3947539c-9c5c-45da-a2fe-62cc2f82f53d
+        name:
+          type: string
+        password:
+          type: string
+        email:
+          type: string
+          example: ex@mp.le
+      nullable: false
+    note:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 3947539c-9c5c-45da-a2fe-62cc2f82f53d
+        name:
+          type: string
+        description:
+          type: string
+    tag:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 3947539c-9c5c-45da-a2fe-62cc2f82f53d
+        name:
+          type: string
+        description:
+          type: string
+        id_user:
+          type: string
+          format: uuid
+          example: 3947539c-9c5c-45da-a2fe-62cc2f82f53d
+        id_note:
+          type: string
+          format: uuid
+          example: 3947539c-9c5c-45da-a2fe-62cc2f82f53d
