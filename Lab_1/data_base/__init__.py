@@ -3,6 +3,7 @@ from gevent.pywsgi import WSGIServer
 from flask import Flask
 from flask_migrate import Manager, Migrate, MigrateCommand
 from flask_sqlalchemy import SQLAlchemy
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@127.0.0.1/lab_6'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -31,12 +32,14 @@ class User(db.Model):
 class Note(db.Model):
     __tablename__ = "notes"
     id = db.Column(db.Integer, primary_key=True)
+    id_users = db.Column(db.Integer, db.ForeignKey(User.id, ondelete="cascade"), unique=True)
     name = db.Column(db.String(70), unique=True, nullable=False)
     count_of_users = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String(70), nullable=False)
 
-    def __init__(self, name, count_of_users, description):
+    def __init__(self, id_user, name, count_of_users, description):
         self.name = name
+        self.id_users = id_user
         self.count_of_users = count_of_users
         self.description = description
 
@@ -74,12 +77,12 @@ class History(db.Model):
 @app.route("/api/v1/hello-world-/<num_of_variant>")
 def hello_world(num_of_variant):
     # user = User("Yaroslav", "exp@smth.com", 22, 22)
-    user = User("Yaroslav", "exp@smth.com",2,22)
-    note = Note("Game", 1, "For boys")
+    user = User("Andrews", "22@smth.com", 3, 32)
+    note = Note(1, "Ocean", 1, "For kids")
     d1 = datetime(2017, 3, 5, 12, 30, 10)
 
-    tag = Tag("cooking", 4, "in the kitchen")
-    history = History("changes", 4, 1, "new user", d1)
+    tag = Tag("chilling", 14, "on the beach")
+    history = History("new_changes", 14, 8, "new user_3", d1)
     #db.session.add(user)
     #db.session.add(note)
     #db.session.add(tag)
@@ -89,5 +92,6 @@ def hello_world(num_of_variant):
 
 
 app.debug = True
-http_server = WSGIServer(('127.0.0.1', 8081), app)
+#manager.run()
+http_server = WSGIServer(('127.0.0.1', 8082), app)
 http_server.serve_forever()
